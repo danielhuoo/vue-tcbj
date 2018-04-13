@@ -1,18 +1,29 @@
 # vue-tcbj
 
-> A Vue.js project
+> A plugin for Vue.js
+> 一个基于Vue.js 的 插件 t
 
 ## Build Setup
 
 ``` bash
-# install dependencies
-npm install
+# install
+npm install vue-tcbj --save
 
-# serve with hot reload at localhost:8080
-npm run dev
+```
 
-# build for production with minification
-npm run build
+``` bash
+# import
+import t from 'vue-tcbj'
+
+Vue.use(t)
+
+new Vue({
+    el: '#app',
+    t,
+    components: {App},
+    template: '<App/>'
+});
+
 ```
 
 For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
