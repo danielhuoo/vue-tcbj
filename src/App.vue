@@ -1,17 +1,16 @@
 <template>
-  <div id="app">
-  </div>
+    <div id="app">
+    </div>
 </template>
 
 <script>
-export default {
-  name: 'app',
-  data () {
-    return {
-
+    export default {
+        name: 'app',
+        mounted() {
+            const t = this.$t;
+            console.log(t.getBaseURL());
+        }
     }
-  }
-}
 </script>
 
 <style>

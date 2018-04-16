@@ -1,13 +1,12 @@
-var path = require('path')
-var webpack = require('webpack')
+const path = require('path');
+const webpack = require('webpack');
 
-console.log(__dirname);
 module.exports = {
     entry: './src/main.js',
     output: {
         path: path.resolve(__dirname, './dist'),
         publicPath: '/dist/',
-        filename: 'vue-tcbj.js',
+        filename: 'build.js',
         library: 'vue-tcbj',
         libraryTarget: 'umd',
         umdNamedDefine: true
@@ -45,7 +44,8 @@ module.exports = {
     resolve: {
         alias: {
             'vue$': 'vue/dist/vue.esm.js',
-            'src': path.join(__dirname, 'src')
+            'lib': path.join(__dirname, 'src/lib'),
+            'tConfig': path.join(__dirname, 'tConfig'),
         },
         extensions: ['*', '.js', '.vue', '.json']
     },
@@ -58,10 +58,10 @@ module.exports = {
         hints: false
     },
     devtool: '#eval-source-map'
-}
+};
 
 if (process.env.NODE_ENV === 'production') {
-    module.exports.devtool = '#source-map'
+    module.exports.devtool = '#source-map';
     // http://vue-loader.vuejs.org/en/workflow/production.html
     module.exports.plugins = (module.exports.plugins || []).concat([
         new webpack.DefinePlugin({
