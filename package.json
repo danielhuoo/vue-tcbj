@@ -1,18 +1,20 @@
 {
   "name": "vue-tcbj",
   "description": "A plugin for Vue.js",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "Daniel",
   "license": "MIT",
   "private": false,
   "main": "dist/vue-tcbj.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack.dev.config.js --hot",
-    "build": "cross-env NODE_ENV=production webpack --config webpack.build.config.js --progress --hide-modules"
+    "build": "cross-env NODE_ENV=production webpack --config webpack.build.config.js --progress --hide-modules",
+    "buildHtml":"cross-env NODE_ENV=production webpack --config webpack.buildHtml.config.js --progress --hide-modules"
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "vue": "^2.5.11"
+    "vue": "^2.5.11",
+    "we-vue": "^2.1.0"
   },
   "browserslist": [
     "> 1%",

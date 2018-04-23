@@ -2,11 +2,11 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-    entry: './src/lib/index.js',
+    entry: './src/main.js',
     output: {
         path: path.resolve(__dirname, './dist'),
         publicPath:'./dist/',
-        filename: 'vue-tcbj.js',
+        filename: 'build.js',
         library: 'vue-tcbj',
         libraryTarget: 'umd',
         umdNamedDefine: true

@@ -1,0 +1,14 @@
+{
+  "appId": "wx888c0c048c5620cb",
+  "openId": "o33A7uJE6UPZyYZLhEy7zss4XpYI",
+  "isUseWxSdk": true,
+  "baseURL": "https://h5-test.by-health.com",
+  "publicPath": "https://h5-test.by-health.com/hwy/vue-tcbj/index.html",
+  "wxSignatureApi": "/archPocApi/getJsSdkSignature",
+  "wxAuthorizedApi": "/archPocApi/webDevAuthorized",
+  "wxDebug": false,
+  "wxJsApiList": [
+    "closeWindow"
+  ],
+  "errorCodeValue": "00"
+}

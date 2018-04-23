@@ -5,11 +5,11 @@ module.exports = {
     entry: './src/main.js',
     output: {
         path: path.resolve(__dirname, './dist'),
-        publicPath: '/dist/',
+        publicPath:'/dist/',
         filename: 'build.js',
-        library: 'vue-tcbj',
+       /* library: 'vue-tcbj',
         libraryTarget: 'umd',
-        umdNamedDefine: true
+        umdNamedDefine: true*/
     },
     module: {
         rules: [
