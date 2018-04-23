@@ -9,10 +9,11 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack.dev.config.js --hot",
     "build": "cross-env NODE_ENV=production webpack --config webpack.build.config.js --progress --hide-modules",
-    "buildHtml":"cross-env NODE_ENV=production webpack --config webpack.buildHtml.config.js --progress --hide-modules"
+    "buildHtml": "cross-env NODE_ENV=production webpack --config webpack.buildHtml.config.js --progress --hide-modules"
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "jsdoc-to-markdown": "^4.0.1",
     "vue": "^2.5.11",
     "we-vue": "^2.1.0"
   },

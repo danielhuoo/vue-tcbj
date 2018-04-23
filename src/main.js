@@ -5,9 +5,6 @@ import tConfig from '../tConfig.json'
 import WeVue from 'we-vue'
 import 'we-vue/lib/style.css'
 
-
-//改了一些东西
-
 Vue.use(WeVue);
 Vue.use(t, tConfig);
 
