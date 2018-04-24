@@ -3,7 +3,7 @@
 ## T
 Class representing a point.
 
-**Kind**: global class  
+**Kind**: global class 
 
 <a name="T+version"></a>
 
