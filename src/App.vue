@@ -25,11 +25,7 @@
 
             this.t.getOpenIdFromWx();
 
-            // alert('567');
-
-
-            
-
+            // alert('567')
 
         },
         methods: {

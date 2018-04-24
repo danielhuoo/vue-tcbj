@@ -7,13 +7,14 @@
   "private": false,
   "main": "dist/vue-tcbj.js",
   "scripts": {
+    "j2m": "jsdoc2md src/lib/index.js > docs/api.md",
+    "docs": "docsify serve docs",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --config webpack.dev.config.js --hot",
     "build": "cross-env NODE_ENV=production webpack --config webpack.build.config.js --progress --hide-modules",
     "buildHtml": "cross-env NODE_ENV=production webpack --config webpack.buildHtml.config.js --progress --hide-modules"
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "jsdoc-to-markdown": "^4.0.1",
     "vue": "^2.5.11",
     "we-vue": "^2.1.0"
   },
@@ -30,6 +31,7 @@
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.4",
+    "jsdoc-to-markdown": "^4.0.1",
     "vue-loader": "^13.0.5",
     "vue-template-compiler": "^2.4.4",
     "webpack": "^3.6.0",

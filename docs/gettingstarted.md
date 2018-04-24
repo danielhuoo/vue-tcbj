@@ -1,94 +1,60 @@
-# 安装
+# 快速上手
 
-It is recommended to install `docsify-cli` globally, which helps initializing and previewing the website locally.
+本文将介绍如果在项目中使用 vue-tcbj。
+
+## 新建你的项目
+
+可以直接参考vue的webpack模板构建方法。本文不再赘述
+
+[use the webpack-simple template](https://vuejs-templates.github.io/webpack/)
+
+## 安装
+
+使用 npm 的方式安装
 
 ```bash
 npm install vue-tcbj --save
 ```
 
-## Initialize
+## 引入
 
-If you want to write the documentation in the `./docs` subdirectory, you can use the `init` command.
+在 main.js 中写入以下内容:
+
+```js
+import Vue from 'vue'
+import App from './App'
+import t from 'vue-tcbj'
+import tConfig from '../tConfig.json'
+
+Vue.use(t, tConfig);
+
+new Vue({
+    el: '#app',
+    render: h => h(App)
+});
+```
+
+以上代码便完成了vue-tcbj的引入。接下来只需要对它进行一下配置，马上就能开始运行了
+
+## 配置
+在项目根目录创建 tConfig.json文件
+
+!> 推荐使用tConfig命名文件，当然你也可以改为其他名字。
+
+!> 路径不一定是根目录，只要你能成功在main.js里import进来就可以。
+
+复制以下内容:
+
+```json
+{
+  "baseURL": "https://h5-test.by-health.com"
+}
+```
+
+## 开始使用
+
+至此，一个基于 Vue 和 vue-tcbj 的开发环境已经搭建完毕，现在就可以编写代码了。启动开发模式：
 
 ```bash
-docsify init ./docs
+npm run dev
 ```
-
-## Writing content
-
-After the `init` is complete, you can see the file list in the `./docs` subdirectory.
-
-* `index.html` as the entry file
-* `README.md` as the home page
-* `.nojekyll` prevents GitHub Pages from ignoring files that begin with an underscore
-
-You can easily update the documentation in `./docs/README.md`, of course you can add [more pages](more-pages.md).
-
-## Preview your site
-
-Run the local server with `docsify serve`. You can preview your site in your browser on `http://localhost:3000`.
-
-```bash
-docsify serve docs
-```
-
-?> For more use cases of `docsify-cli`, head over to the [docsify-cli documentation](https://github.com/QingWei-Li/docsify-cli).
-
-## Manual initialization
-
-If you don't like `npm` or have trouble installing the tool, you can manually create `index.html`:
-
-```html
-<!-- index.html -->
-
-<!DOCTYPE html>
-<html>
-<head>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="//unpkg.com/docsify/themes/vue.css">
-</head>
-<body>
-  <div id="app"></div>
-  <script>
-    window.$docsify = {
-      //...
-    }
-  </script>
-  <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
-</body>
-</html>
-```
-
-If you installed python on your system, you can easily use it to run a static server to preview your site.
-
-```bash
-cd docs && python -m SimpleHTTPServer 3000
-```
-
-## Loading dialog
-
-If you want, you can show a loading dialog before docsify starts to render your documentation:
-
-```html
-  <!-- index.html -->
-
-  <div id="app">Please wait...</div>
-```
-
-You should set the `data-app` attribute if you changed `el`:
-
-```html
-  <!-- index.html -->
-
-  <div data-app id="main">Please wait...</div>
-
-  <script>
-    window.$docsify = {
-      el: '#main'
-    }
-  </script>
-```
-
-Compare [el configuration](configuration.md#el).

@@ -1,8 +1,14 @@
 # vue-tcbj
 
-> An awesome plugin for Vue.js
+> 一个基于 Vue.js 开发环境的 工具类插件
 
-* more user-friendly Wechat JSSDK
+* 封装了基于axios的ajax请求
+
+* 顺滑调用微信公众平台的常用接口
+
+* 不依赖jQuery等外部框架
+
+* 让开发者更加专注业务逻辑
 
 [GitHub](https://github.com/Huohuohuo/vue-tcbj)
 [快速开始](gettingstarted)

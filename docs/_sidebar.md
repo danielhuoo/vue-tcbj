@@ -1,2 +1,4 @@
 * [首页](/)
-* [快速开始](gettingstarted.md)
+* [快速上手](gettingstarted.md)
+* [API](api.md)
+* [配置](json.md)

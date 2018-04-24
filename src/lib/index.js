@@ -4,11 +4,11 @@ import 'lib/components/weui.css'
 import message from 'lib/components/alert'
 import loader from 'lib/components/loading'
 
-// 生成签名的随机串
-let randomString = () => {
+//生成签名的随机串
+let randomString = function () {
     let len = 6,
         $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678',
-        /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+        /****默认去掉了容易混淆的字符oO,Ll,9gq,Vv,Uu,I1****/
         maxPos = $chars.length,
         pwd = '';
     for (let i = 0; i < len; i++) {
@@ -18,7 +18,7 @@ let randomString = () => {
 };
 
 //微信重定向
-let weChatAuthRedirect = (appId, authURL, redirectURL) => {
+let weChatAuthRedirect = function (appId, authURL, redirectURL) {
     //console.log('weChatAuthRedirect appId=='+appId+' authURL=='+authURL+' redirectURL=='+redirectURL);
 
     // 微信认证后的重定向接口
@@ -36,7 +36,7 @@ let weChatAuthRedirect = (appId, authURL, redirectURL) => {
 };
 
 //初始化Rem
-let initRem = () => {
+let initRem = function () {
     /* 设计图文档宽度 */
     let docWidth = 750;
 
@@ -44,22 +44,24 @@ let initRem = () => {
         docEl = doc.documentElement,
         resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
 
-    let recalc = (function refreshRem() {
+    let recalc = function refreshRem() {
         let clientWidth = docEl.getBoundingClientRect().width;
 
         /* 8.55：小于320px不再缩小，11.2：大于420px不再放大 */
         docEl.style.fontSize = Math.max(Math.min(20 * (clientWidth / docWidth), 11.2), 8.55) * 5 + 'px';
 
         return refreshRem;
-    })();
+    };
 
-    if (!doc.addEventListener) return;
+    if (!doc.addEventListener) {
+        return
+    };
     window.addEventListener(resizeEvt, recalc, false);
     doc.addEventListener('DOMContentLoaded', recalc, false);
 };
 
 //iOS系统在获取openId后，由于经过重定向，返回按钮会失效。为了点击返回按钮能关闭页面，需要用以下代码，该代码对安卓无影响。因此不需要对手机类型进行区分。
-let initIOSBackBtn = () => {
+let initIOSBackBtn = function () {
 
     let state = {
         title: "title",
@@ -90,24 +92,35 @@ let inT = {
     commonErrorTips: '抱歉，服务器繁忙。<br/>请稍后再试。'
 };
 
+/** Class representing a point.
+ * 
+*/
 class T {
 
+    /**
+     * 
+     * 
+     *
+     */
     constructor(tConfig) {
         this.isNeedRedirect = false;//是否需要进行微信重定向
         this.VERSION = '1.0.3';
         this.init(tConfig);
     }
 
-    //获取版本号
+    /**
+     * Get the version value.
+     * @return {string} 版本号
+     *
+     */
     get version() {
         return this.VERSION;
     }
 
-}
-
-//在ES6中，对象方法的定义更加简洁，不需要使用function关键字。这时，可以使用Object.assign()为对象新增方法：
-Object.assign(T.prototype, {
-
+    /**
+     * Init the t.
+     * 
+     */
     init(tConfig) {
 
         inT = Object.assign({}, inT, tConfig);
@@ -115,77 +128,37 @@ Object.assign(T.prototype, {
         initRem();
 
         this.getJsSdkSignature();
-    },
+    }
 
+    /**
+     * Get the appId value.
+     * @return {string} appId
+     */
     getAppId() {
         return inT.appId;
-    },
+    }
 
+    /**
+     * Get the openId value.
+     * @return {string} openId
+     */
     getOpenId() {
         return inT.openId;
-    },
+    }
 
-    //微信 JS 接口签名
-    getJsSdkSignature() {
-
-        let that = this;
-
-        //是否需要启用JS接口
-        if (!inT.isUseWxSdk) {
-            return;
-        }
-
-        // 是否已经在HTML引入了JSSDK
-        if (!window.wx) {
-            that.showMessage({
-                content: '请引入jsSDK'
-            });
-            return;
-        }
-
-        let nonceStr = randomString(),
-            timestamp = (new Date().getTime()).toString();
-
-        let configWx = function (signature) {
-
-            wx.config({
-                debug: inT.wxDebug, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                appId: inT.appId, // 必填，公众号的唯一标识
-                timestamp: timestamp, // 必填，生成签名的时间戳
-                nonceStr: nonceStr, // 必填，生成签名的随机串
-                signature: signature,// 必填，签名
-                jsApiList: inT.wxJsApiList // 必填，需要使用的JS接口列表
-            });
-
-            if (inT.wxDebug) {
-                console.log('调用sdk成功！')
-            }
-        };
-
-        let opts = {
-            url: inT.baseURL + inT.wxSignatureApi,
-            method: 'GET',
-            params: {
-                noncestr: nonceStr,
-                timestamp: timestamp,
-                url: decodeURIComponent(location.href.split('#')[0])
-            }
-        };
-
-        that.ajax(opts).then(data => {
-            if (data.returnObject) {
-                configWx(data.returnObject.signature);
-            }
-        });
-    },
-
-
-    //获取服务器接口域名地址
+    /**
+     * 获取服务器接口域名地址
+     * @return {string} baseURL
+     */
     getBaseURL() {
         return inT.baseURL;
-    },
+    }
 
-    //发起ajax请求
+    /**
+     * 发起ajax请求
+     * @param {object}
+     * @returns {object}
+     */
     ajax(opt) {
         const instance = axios.create();
 
@@ -268,9 +241,69 @@ Object.assign(T.prototype, {
             headers: tempHeaders,
             responseType: tempResponseType
         });
-    },
+    }
 
-    //获取网址问号后面特定参数对应的值
+    /**
+     * 微信 JS 接口签名
+     */
+    getJsSdkSignature() {
+
+        let that = this;
+
+        //是否需要启用JS接口
+        if (!inT.isUseWxSdk) {
+            return;
+        }
+
+        // 是否已经在HTML引入了JSSDK
+        if (!window.wx) {
+            that.showMessage({
+                content: '请引入jsSDK'
+            });
+            return;
+        }
+
+        let nonceStr = randomString(),
+            timestamp = (new Date().getTime()).toString();
+
+        let configWx = function (signature) {
+
+            wx.config({
+                debug: inT.wxDebug, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                appId: inT.appId, // 必填，公众号的唯一标识
+                timestamp: timestamp, // 必填，生成签名的时间戳
+                nonceStr: nonceStr, // 必填，生成签名的随机串
+                signature: signature,// 必填，签名
+                jsApiList: inT.wxJsApiList // 必填，需要使用的JS接口列表
+            });
+
+            if (inT.wxDebug) {
+                console.log('调用sdk成功！')
+            }
+        };
+
+        let opts = {
+            url: inT.baseURL + inT.wxSignatureApi,
+            method: 'GET',
+            params: {
+                noncestr: nonceStr,
+                timestamp: timestamp,
+                url: decodeURIComponent(location.href.split('#')[0])
+            }
+        };
+
+        that.ajax(opts).then(data => {
+            if (data.returnObject) {
+                configWx(data.returnObject.signature);
+            }
+        });
+    }
+
+    /**
+     * 获取网址问号后面特定参数对应的值
+     * @param {string}
+     * @returns {string}
+     */
     getQueryString(name) {
         //console.log('getQueryString name=='+name);
 
@@ -282,9 +315,13 @@ Object.assign(T.prototype, {
         }
 
         return null;
-    },
+    }
 
-    //检查给定名称的location hash是否存在。
+    /**
+     * 检查给定名称的location hash是否存在。
+     * @param {string}
+     * @returns {boolean}
+     */
     checkLocationHashKeyExist(name) {
         //console.log('checkLocationHashKeyExist name=='+name);
 
@@ -305,9 +342,13 @@ Object.assign(T.prototype, {
 
         //console.log('isKeyExist=='+isKeyExist);
         return isKeyExist;
-    },
+    }
 
-    // 更新指定名称的location hash的值。如果指定名称不存在，则执行增加。
+    /**
+     * 更新指定名称的location hash的值。如果指定名称不存在，则执行增加。
+     * @param {string} name
+     * @param {string} value
+     */
     updateLocationHashKey(name, value) {
         //console.log('updateLocationHashKey name=='+name+' value=='+value);
 
@@ -320,18 +361,25 @@ Object.assign(T.prototype, {
         } else {
             this.addLocationHashKey(name, value);
         }
-    },
+    }
 
-    // 检查location hash是否为空。
+    /**
+     * 检查location hash是否为空。
+     * @returns {boolean}
+     */
     isLocationHashEmpty() {
         //console.log('isLocationHashEmpty');
 
         let tempStr = window.location.hash;
         //console.log('isLocationHashEmpty tempStr=='+tempStr);
         return tempStr === ''
-    },
+    }
 
-    // 获取除特定的名称以外的剩余location hash值。
+    /**
+     * 获取除特定的名称以外的剩余location hash值。
+     * @param {string} name
+     * @returns {string}
+     */
     getLocationHashWithoutKey(name) {
         //console.log('getLocationHashWithoutKey name=='+name);
 
@@ -350,9 +398,13 @@ Object.assign(T.prototype, {
         }
 
         return tempNewStr.substring(1);
-    },
+    }
 
-    // 增加名称和相应的值到location hash。如果名称已经存在，则执行更新操作。
+    /**
+     * 增加名称和相应的值到location hash。如果名称已经存在，则执行更新操作。
+     * @param {string} name
+     * @param {string} value
+     */
     addLocationHashKey(name, value) {
         //console.log('addLocationHashKey name=='+name+' value=='+value);
 
@@ -369,9 +421,13 @@ Object.assign(T.prototype, {
 
             window.location.hash = tempStr;
         }
-    },
+    }
 
-    // 从location hash获取给定名称的值。
+    /**
+     * 从location hash获取给定名称的值。
+     * @param {string} name
+     * @returns {string}
+     */
     getLocationHashValue(name) {
 
         let tempStr = decodeURIComponent(window.location.hash).substring(1),
@@ -390,9 +446,13 @@ Object.assign(T.prototype, {
         }
 
         return returnValue;
-    },
+    }
 
-    // localStorage 的读和写操作。
+    /**
+     * localStorage 的读和写操作。
+     * @param {string} name
+     * @param {string} value
+     */
     localStorage(name, value) {
         //console.log('localStorage name=='+name+' value=='+value);
 
@@ -409,15 +469,21 @@ Object.assign(T.prototype, {
         }
 
         localStorage.setItem(name, value);
-    },
+    }
 
-    // 显示消息给用户。
+    /**
+     * 显示消息给用户。
+     * @param {object} opt
+     */
     showMessage(opt) {
         this.hideLoader();
         message(opt);
-    },
+    }
 
-    // 显示Loader, 可以通过hideLoader()方法显式关闭或者等待超时才关闭。
+    /**
+     * 显示Loader, 可以通过hideLoader()方法显式关闭或者等待超时才关闭。
+     * @param {object}
+     */
     showLoader(tempOpt) {
         // console.log('showLoader');
         let opt = {
@@ -426,15 +492,19 @@ Object.assign(T.prototype, {
 
         opt = Object.assign({}, opt, tempOpt);
         loader.showLoading(opt);
-    },
+    }
 
-    // 隐藏Loader。
+    /**
+     * 隐藏Loader。
+     */
     hideLoader() {
         // console.log('hideLoader');
         loader.hideLoading();
-    },
+    }
 
-    //通过微信服务器获取用户openId
+    /**
+     * 通过微信服务器获取用户openId
+     */
     getOpenIdFromWx() {
 
         //在开发阶段，写死了openId，将不会进行重定向
@@ -462,11 +532,17 @@ Object.assign(T.prototype, {
         }
 
         initIOSBackBtn();
-    },
+    }
 
-    //cookie 的读和写操作
-    cookie: function (name, value, options) {
-        //console.log('cookie name=='+name+' value=='+value+' options=='+options);
+    /**
+     * cookie 的读和写操作
+     * @param {string} name
+     * @param {string} value
+     * @param {object} options
+     * @returns {string}
+     */
+    cookie(name, value, options) {
+        // console.log('cookie name=='+name+' value=='+value+' options=='+options);
 
         if (typeof value !== 'undefined') {
             options = options || {};
@@ -503,10 +579,9 @@ Object.assign(T.prototype, {
             }
             return cookieValue;
         }
-    },
+    }
 
-});
-
+}
 
 export default {
     install(Vue, tConfig) {
