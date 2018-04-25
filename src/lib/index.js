@@ -104,7 +104,7 @@ class T {
      */
     constructor(tConfig) {
         this.isNeedRedirect = false;//是否需要进行微信重定向
-        this.VERSION = '1.0.3';
+        this.VERSION = '1.0.5';
         this.init(tConfig);
     }
 
