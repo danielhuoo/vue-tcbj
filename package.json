@@ -1,7 +1,7 @@
 {
   "name": "vue-tcbj",
   "description": "A plugin for Vue.js",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "author": "Daniel",
   "license": "MIT",
   "private": false,
