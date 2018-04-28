@@ -2,5 +2,12 @@
   "presets": [
     ["env", { "modules": false }],
     "stage-3"
-  ]
+  ],
+  "plugins": [
+    ["component", [
+    {
+      "libraryName": "we-vue",
+      "style": true
+    }
+  ]]]
 }

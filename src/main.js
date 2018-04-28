@@ -1,12 +1,12 @@
 import Vue from 'vue'
-import App from './App'
+import 'we-vue/lib/style.css'
 import t from 'lib'
 import tConfig from '../tConfig.json'
-import WeVue from 'we-vue'
-import 'we-vue/lib/style.css'
+import { Button } from 'we-vue'
+import App from './App'
 
-Vue.use(WeVue);
 Vue.use(t, tConfig);
+Vue.use(Button);
 
 new Vue({
     el: '#app',

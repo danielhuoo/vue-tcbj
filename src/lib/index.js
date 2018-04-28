@@ -1,8 +1,6 @@
 import axios from 'axios'
-//引用自定义组件
-import 'lib/components/weui.css'
-import message from 'lib/components/alert'
-import loader from 'lib/components/loading'
+import { Dialog } from "we-vue"
+import { Toast } from 'we-vue'
 
 //生成签名的随机串
 let randomString = function () {
@@ -19,7 +17,7 @@ let randomString = function () {
 
 //微信重定向
 let weChatAuthRedirect = function (appId, authURL, redirectURL) {
-    //console.log('weChatAuthRedirect appId=='+appId+' authURL=='+authURL+' redirectURL=='+redirectURL);
+    console.log('weChatAuthRedirect appId==' + appId + ' authURL==' + authURL + ' redirectURL==' + redirectURL);
 
     // 微信认证后的重定向接口
     let tempRedirectURL = encodeURIComponent(authURL),
@@ -82,6 +80,7 @@ let inT = {
     appId: null,
     openId: null,
     isUseWxSdk: false,
+    isDebugMode: false,
     baseURL: null,
     publicPath: null,
     wxSignatureApi: null,
@@ -92,9 +91,6 @@ let inT = {
     commonErrorTips: '抱歉，服务器繁忙。<br/>请稍后再试。'
 };
 
-/** Class representing a point.
- * 
-*/
 class T {
 
     /**
@@ -104,9 +100,15 @@ class T {
      */
     constructor(tConfig) {
         this.isNeedRedirect = false;//是否需要进行微信重定向
-        this.VERSION = '1.0.6';
         this.init(tConfig);
     }
+
+    log(message) {
+        if (inT.isDebugMode) {
+            console.log(message);
+        };
+    }
+
 
     /**
      * Get the version value.
@@ -114,7 +116,7 @@ class T {
      *
      */
     get version() {
-        return this.VERSION;
+        return '1.0.7';
     }
 
     /**
@@ -125,7 +127,7 @@ class T {
 
         inT = Object.assign({}, inT, tConfig);
 
-        initRem();
+        // initRem();
 
         this.getJsSdkSignature();
     }
@@ -160,6 +162,7 @@ class T {
      * @returns {object}
      */
     ajax(opt) {
+        this.log('ajax');
         const instance = axios.create();
 
         const that = this;
@@ -201,35 +204,33 @@ class T {
         }
 
         //显示loader
-        if (opt.isShowLoader === undefined || opt.isShowLoader) {
-            this.showLoader();
-        }
+        that.showLoader({
+            duration: '10000000'
+        });
 
         if (opt.responseType && (typeof opt.responseType === 'string') && opt.responseType.trim() !== '') {
             tempResponseType = opt.responseType;
         }
 
         //对axios回应进行拦截
-        instance.interceptors.response.use(function (response) {
+        instance.interceptors.response.use((response) => {
 
-            if (opt.isShowLoader === undefined || opt.isShowLoader) {
-                that.hideLoader();
-            }
+            that.hideLoader();
 
             const data = response.data;
 
             if (data.errorCode !== inT.errorCodeValue) {
-                that.showMessage({
-                    content: data.errorMessage + ' (' + data.errorCode + ')'
+                that.showAlert({
+                    message: data.errorMessage + ' (' + data.errorCode + ')'
                 });
             }
 
             return response.data;
-        }, function (error) {
-            that.showMessage({
-                content: inT.commonErrorTips
+        }, (error) => {
+            that.showAlert({
+                message: inT.commonErrorTips
             });
-            console.log('请求接口失败');
+            this.log('请求接口失败');
             return Promise.reject(error);
         });
 
@@ -247,6 +248,7 @@ class T {
      * 微信 JS 接口签名
      */
     getJsSdkSignature() {
+        this.log('getJsSdkSignature');
 
         let that = this;
 
@@ -257,8 +259,8 @@ class T {
 
         // 是否已经在HTML引入了JSSDK
         if (!window.wx) {
-            that.showMessage({
-                content: '请引入jsSDK'
+            that.showAlert({
+                message: '请引入jsSDK'
             });
             return;
         }
@@ -278,7 +280,7 @@ class T {
             });
 
             if (inT.wxDebug) {
-                console.log('调用sdk成功！')
+                this.log('调用sdk成功！')
             }
         };
 
@@ -305,7 +307,7 @@ class T {
      * @returns {string}
      */
     getQueryString(name) {
-        //console.log('getQueryString name=='+name);
+        this.log('getQueryString name==' + name);
 
         const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
         const r = window.location.search.substr(1).match(reg);
@@ -323,7 +325,7 @@ class T {
      * @returns {boolean}
      */
     checkLocationHashKeyExist(name) {
-        //console.log('checkLocationHashKeyExist name=='+name);
+        this.log('checkLocationHashKeyExist name==' + name);
 
         let tempStr = decodeURIComponent(window.location.hash).substring(1),
             tempArray = tempStr.split('&'),
@@ -340,7 +342,7 @@ class T {
             }
         } // End for
 
-        //console.log('isKeyExist=='+isKeyExist);
+        //this.log('isKeyExist=='+isKeyExist);
         return isKeyExist;
     }
 
@@ -350,7 +352,7 @@ class T {
      * @param {string} value
      */
     updateLocationHashKey(name, value) {
-        //console.log('updateLocationHashKey name=='+name+' value=='+value);
+        this.log('updateLocationHashKey name==' + name + ' value==' + value);
 
         if (this.checkLocationHashKeyExist(name)) {
             if (this.getLocationHashWithoutKey(name) === '') {
@@ -368,10 +370,10 @@ class T {
      * @returns {boolean}
      */
     isLocationHashEmpty() {
-        //console.log('isLocationHashEmpty');
+        this.log('isLocationHashEmpty');
 
         let tempStr = window.location.hash;
-        //console.log('isLocationHashEmpty tempStr=='+tempStr);
+        //this.log('isLocationHashEmpty tempStr=='+tempStr);
         return tempStr === ''
     }
 
@@ -381,7 +383,7 @@ class T {
      * @returns {string}
      */
     getLocationHashWithoutKey(name) {
-        //console.log('getLocationHashWithoutKey name=='+name);
+        this.log('getLocationHashWithoutKey name==' + name);
 
         let tempStr = decodeURIComponent(window.location.hash).substring(1),
             tempArray = tempStr.split('&'),
@@ -406,7 +408,7 @@ class T {
      * @param {string} value
      */
     addLocationHashKey(name, value) {
-        //console.log('addLocationHashKey name=='+name+' value=='+value);
+        this.log('addLocationHashKey name==' + name + ' value==' + value);
 
         let tempStr = decodeURIComponent(window.location.hash);
 
@@ -429,7 +431,7 @@ class T {
      * @returns {string}
      */
     getLocationHashValue(name) {
-
+        this.log('getLocationHashValue name===' + name);
         let tempStr = decodeURIComponent(window.location.hash).substring(1),
             tempArray = tempStr.split('&'),
             tempArray2 = [],
@@ -454,7 +456,7 @@ class T {
      * @param {string} value
      */
     localStorage(name, value) {
-        //console.log('localStorage name=='+name+' value=='+value);
+        this.log('localStorage name==' + name + ' value==' + value);
 
         if (name === undefined || name === null || name.trim() === '') {
             return null;
@@ -475,9 +477,18 @@ class T {
      * 显示消息给用户。
      * @param {object} opt
      */
-    showMessage(opt) {
-        this.hideLoader();
-        message(opt);
+    showAlert(opt) {
+        this.log('showAlert');
+
+        if (!opt.title) {
+            opt.title = '';
+        }
+        Dialog.alert(opt);
+    }
+
+    showConfirm(opt) {
+        this.log('showConfirm');
+        return Dialog.confirm(opt)
     }
 
     /**
@@ -485,28 +496,30 @@ class T {
      * @param {object}
      */
     showLoader(tempOpt) {
-        // console.log('showLoader');
-        let opt = {
-            visible: true
-        };
+        this.log('showLoader');
 
-        opt = Object.assign({}, opt, tempOpt);
-        loader.showLoading(opt);
+        if (tempOpt === undefined || tempOpt === null || tempOpt === '') {
+            tempOpt = {
+                message: '加载中'
+            }
+        }
+
+        Toast.loading(tempOpt);
     }
 
     /**
      * 隐藏Loader。
      */
     hideLoader() {
-        // console.log('hideLoader');
-        loader.hideLoading();
+        this.log('hideLoader');
+        Toast.close();
     }
 
     /**
      * 通过微信服务器获取用户openId
      */
     getOpenIdFromWx() {
-
+        this.log('getOpenIdFromWx');
         //在开发阶段，写死了openId，将不会进行重定向
         if (inT.openId) {
             return;
@@ -542,7 +555,7 @@ class T {
      * @returns {string}
      */
     cookie(name, value, options) {
-        // console.log('cookie name=='+name+' value=='+value+' options=='+options);
+        this.log('cookie name==' + name + ' value==' + value + ' options==' + options);
 
         if (typeof value !== 'undefined') {
             options = options || {};

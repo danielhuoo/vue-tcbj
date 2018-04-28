@@ -3,7 +3,7 @@
         <wv-button type="primary" @click="getOpenId">显示openId</wv-button>
         <wv-button type="primary" @click="getVersion">显示版本号</wv-button>
         <wv-button type="primary" @click="showLoader">显示loader</wv-button>
-        <wv-button type="primary" @click="showMessage">显示提示框</wv-button>
+        <wv-button type="primary" @click="showAlert">显示提示框</wv-button>
         <wv-button type="primary" @click="fetchData">调用ajax</wv-button>
         <wv-button type="primary" @click="getLocationHashValue">从Hash获取给定名称的值</wv-button>
         <wv-button type="primary" @click="updateLocationHashKey">更改Hash的name值</wv-button>
@@ -16,114 +16,109 @@
 </template>
 
 <script>
-    export default {
-        name: 'app',
-        data() {
-            return {}
-        },
-        mounted() {
+export default {
+  name: "app",
+  data() {
+    return {};
+  },
+  mounted() {
+    this.t.getOpenIdFromWx();
+  },
+  methods: {
+    getOpenId() {
+      this.t.showAlert({
+        content: this.t.getOpenId()
+      });
+    },
 
-            this.t.getOpenIdFromWx();
+    getVersion() {
+      this.t.showAlert({
+        message: this.t.version
+      });
+    },
+    showLoader() {
+      this.t.showLoader();
+    },
 
-            // alert('567')
+    showAlert() {
+      this.t.showAlert({
+        message: "你最近还好吗"
+      });
+    },
 
-        },
-        methods: {
+    fetchData() {
+      console.log("fetchData");
 
-            getOpenId() {
-                this.t.showMessage({
-                    content: this.t.getOpenId()
-                });
-            },
+      let tempParams = {
+        // openId: this.t.getOpenId(),
+        lang: "zh_CN"
+      };
 
-            getVersion() {
-                this.t.showMessage({
-                    content: this.t.getVersion()
-                });
-            },
-            showLoader() {
-                console.log('showLoader');
-                this.t.showLoader({
-                    time: 2000
-                });
-            },
+      const API = this.t.getBaseURL() + "/archPocApi/getUserInfo";
 
-            showMessage() {
-                console.log('showMessage');
-                this.t.showMessage({
-                    content: '你最近还好吗？'
-                });
-            },
+      let tempObj = {
+        url: API,
+        method: "get",
+        params: tempParams
+      };
 
-            fetchData() {
-                console.log('fetchData');
+      this.t
+        .ajax(tempObj)
+        .then(data => {
+          this.t.showAlert({
+            message: data.errorMessage,
+            title: ""
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
 
-                let tempParams = {
-                    openId: this.getOpenId(),
-                    lang: 'zh_CN'
-                };
+    getLocationHashValue() {
+      this.t.showAlert({
+        content: this.t.getLocationHashValue("name")
+      });
+    },
 
-                const API = this.t.getBaseURL() + '/archPocApi/getUserInfo';
+    getQueryString() {
+      this.t.showAlert({
+        content: this.t.getQueryString("name")
+      });
+    },
 
-                let tempObj = {
-                    url: API,
-                    method: 'get',
-                    params: tempParams
-                };
+    setLocalStorage() {
+      this.t.localStorage("name", "tcbj");
+    },
 
-                this.t.ajax(tempObj).then(data => {
-                    this.t.showMessage({
-                        content: data.errorMessage
-                    });
-                }).catch(error => {
-                    console.log(error);
-                });
-            },
+    getLocalStorage() {
+      this.t.showAlert({
+        content: this.t.localStorage("name")
+      });
+    },
 
-            getLocationHashValue() {
-                this.t.showMessage({
-                    content: this.t.getLocationHashValue('name')
-                });
-            },
+    updateLocationHashKey() {
+      let value = "baiyue";
+      this.t.updateLocationHashKey("name", value);
+      console.log("locationHashKey 更改为===" + value);
+    },
 
-            getQueryString() {
-                this.t.showMessage({
-                    content: this.t.getQueryString('name')
-                });
-            },
+    setCookie() {
+      this.t.cookie("myName", "huohuohuo");
+    },
 
-            setLocalStorage() {
-                this.t.localStorage('name', 'tcbj');
-            },
-
-            getLocalStorage() {
-                this.t.showMessage({
-                    content: this.t.localStorage('name')
-                });
-            },
-
-            updateLocationHashKey() {
-                let value = 'baiyue';
-                this.t.updateLocationHashKey('name', value);
-                console.log('locationHashKey 更改为===' + value);
-            },
-
-            setCookie() {
-                this.t.cookie('myName', 'huohuohuo');
-            },
-
-            getCookie() {
-                this.t.showMessage({
-                    content: this.t.cookie('myName')
-                });
-            }
-        }
+    getCookie() {
+      this.t.showAlert({
+        content: this.t.cookie("myName")
+      });
     }
+  }
+};
 </script>
 
 <style>
-    body {
-        margin: 0;
-        padding: 20px 10px;
-    }
+body {
+  margin: 0;
+  padding: 20px 10px;
+}
 </style>
