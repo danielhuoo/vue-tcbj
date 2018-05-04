@@ -4,6 +4,7 @@
         <wv-button type="primary" @click="getVersion">显示版本号</wv-button>
         <wv-button type="primary" @click="showLoader">显示loader</wv-button>
         <wv-button type="primary" @click="showAlert">显示提示框</wv-button>
+        <wv-button type="primary" @click="showConfirm">显示对话框</wv-button>
         <wv-button type="primary" @click="fetchData">调用ajax</wv-button>
         <wv-button type="primary" @click="getLocationHashValue">从Hash获取给定名称的值</wv-button>
         <wv-button type="primary" @click="updateLocationHashKey">更改Hash的name值</wv-button>
@@ -27,7 +28,7 @@ export default {
   methods: {
     getOpenId() {
       this.t.showAlert({
-        content: this.t.getOpenId()
+        message: this.t.getOpenId()
       });
     },
 
@@ -46,11 +47,26 @@ export default {
       });
     },
 
+    showConfirm() {
+      this.t
+        .showConfirm({
+          title: "你最近还好吗",
+          message: "欢迎使用 we-vue!",
+          showCancelButton: true
+        })
+        .then(() => {
+          console.log('confirmed');
+        })
+        .catch(() => {
+            console.log('canceled');
+        });
+    },
+
     fetchData() {
       console.log("fetchData");
 
       let tempParams = {
-        // openId: this.t.getOpenId(),
+        openId: this.t.getOpenId(),
         lang: "zh_CN"
       };
 
@@ -77,13 +93,13 @@ export default {
 
     getLocationHashValue() {
       this.t.showAlert({
-        content: this.t.getLocationHashValue("name")
+        message: this.t.getLocationHashValue("name")
       });
     },
 
     getQueryString() {
       this.t.showAlert({
-        content: this.t.getQueryString("name")
+        message: this.t.getQueryString("name")
       });
     },
 
@@ -93,7 +109,7 @@ export default {
 
     getLocalStorage() {
       this.t.showAlert({
-        content: this.t.localStorage("name")
+        message: this.t.localStorage("name")
       });
     },
 
@@ -109,7 +125,7 @@ export default {
 
     getCookie() {
       this.t.showAlert({
-        content: this.t.cookie("myName")
+        message: this.t.cookie("myName")
       });
     }
   }

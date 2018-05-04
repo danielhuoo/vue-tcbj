@@ -1,9 +1,9 @@
 {
   "appId": "wx888c0c048c5620cb",
   "openId": "o33A7uJE6UPZyYZLhEy7zss4XpYI",
-  "isUseWxSdk": true,
+  "isUseWxSdk": false,
   "isDebugMode":true,
-  "baseURL": "http://127.0.0.1:8888/crossDomain",
+  "baseURL": "http://localhost:8080/crossDomain",
   "publicPath": "https://h5-test.by-health.com/hwy/vue-tcbj/index.html",
   "wxSignatureApi": "/archPocApi/getJsSdkSignature",
   "wxAuthorizedApi": "/archPocApi/webDevAuthorized",

@@ -1,9 +1,7 @@
 <a name="T"></a>
 
 ## T
-Class representing a point.
-
-**Kind**: global class 
+**Kind**: global class  
 
 <a name="T+version"></a>
 
@@ -41,19 +39,32 @@ Get the openId value.
 **Returns**: <code>string</code> - baseURL  
 <a name="T+ajax"></a>
 
-### t.ajax(opt) ⇒ <code>object</code>
+### t.ajax(option) ⇒ <code>object</code>
 发起ajax请求
 
-**Kind**: instance method of [<code>T</code>](#T)  
+当后台返回的errorCode与tConfig里指定的errorCodeValue 不相符时，表示请求出错，会被拦截，并弹出错误信息
 
-| Param | Type |
-| --- | --- |
-| opt | <code>object</code> | 
+**Kind**: instance method of [<code>T</code>](#T)  
+**Returns**: <code>object</code> - axios instance - 返回一个Promise类型的axios实例，可对它做进一步处理。
+关于axios的详细资料见：https://github.com/axios/axios  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| option | <code>Object</code> | 该方法需要一个对象作为参数 |
+| opt.method | <code>string</code> | 请求的类型，默认为 GET |
+| opt.url | <code>string</code> | 请求的接口地址。此处不进行任何更改，传进什么就是什么。但会在末尾加上一个随机时间戳 |
+| opt.params | <code>Object</code> | 请求的数据。默认为空对象 |
+| opt.timeout | <code>number</code> | 请求的超时时间。单位为毫秒。默认为30000毫秒。 |
+| opt.headers | <code>Object</code> | 请求的头信息。默认为空对象。 |
+| opt.responseType | <code>string</code> | 请求的返回类型。默认为text。 |
 
 <a name="T+getJsSdkSignature"></a>
 
 ### t.getJsSdkSignature()
 微信 JS 接口签名
+需要在tConfig指定是否调用微信JS接口。开发者无需显示调用该方法
+如需要调用，请先在HTML中引入官方JSSDK
+https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115
 
 **Kind**: instance method of [<code>T</code>](#T)  
 <a name="T+getQueryString"></a>
@@ -142,10 +153,23 @@ localStorage 的读和写操作。
 | name | <code>string</code> | 
 | value | <code>string</code> | 
 
-<a name="T+showMessage"></a>
+<a name="T+showAlert"></a>
 
-### t.showMessage(opt)
+### t.showAlert(opt)
 显示消息给用户。
+详细参数见：https://wevue.org/doc/v2_0/dialog 中的alert方法
+
+**Kind**: instance method of [<code>T</code>](#T)  
+
+| Param | Type |
+| --- | --- |
+| opt | <code>object</code> | 
+
+<a name="T+showConfirm"></a>
+
+### t.showConfirm(opt)
+显示消息给用户。
+详细参数见：https://wevue.org/doc/v2_0/dialog 中的confirm方法
 
 **Kind**: instance method of [<code>T</code>](#T)  
 
@@ -156,7 +180,8 @@ localStorage 的读和写操作。
 <a name="T+showLoader"></a>
 
 ### t.showLoader(tempOpt)
-显示Loader, 可以通过hideLoader()方法显式关闭或者等待超时才关闭。
+显示Loader。可以通过hideLoader()显式关闭或者等待超时才关闭。
+详细参数见：https://wevue.org/doc/v2_0/toast 中的loading方法
 
 **Kind**: instance method of [<code>T</code>](#T)  
 
@@ -174,6 +199,8 @@ localStorage 的读和写操作。
 
 ### t.getOpenIdFromWx()
 通过微信服务器获取用户openId
+
+如果在tConfig里指定了openId，将不会进行重定向
 
 **Kind**: instance method of [<code>T</code>](#T)  
 <a name="T+cookie"></a>

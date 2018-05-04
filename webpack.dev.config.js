@@ -5,11 +5,11 @@ module.exports = {
     entry: './src/main.js',
     output: {
         path: path.resolve(__dirname, './dist'),
-        publicPath:'/dist/',
+        publicPath: '/dist/',
         filename: 'build.js',
-       /* library: 'vue-tcbj',
-        libraryTarget: 'umd',
-        umdNamedDefine: true*/
+        /* library: 'vue-tcbj',
+         libraryTarget: 'umd',
+         umdNamedDefine: true*/
     },
     module: {
         rules: [
@@ -52,7 +52,16 @@ module.exports = {
     devServer: {
         historyApiFallback: true,
         noInfo: true,
-        overlay: true
+        overlay: true,
+        port: 8080,
+        proxy:{
+            "/crossDomain/archPocApi/": {
+                target: "https://h5-test.by-health.com",
+                secure: false,
+                changeOrigin:true,
+                pathRewrite: {"/crossDomain/archPocApi/" : "/archPocApi/"}
+            }
+    }
     },
     performance: {
         hints: false

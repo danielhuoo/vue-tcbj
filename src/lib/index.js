@@ -3,7 +3,7 @@ import { Dialog } from "we-vue"
 import { Toast } from 'we-vue'
 
 //生成签名的随机串
-let randomString = function () {
+const randomString = function () {
     let len = 6,
         $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678',
         /****默认去掉了容易混淆的字符oO,Ll,9gq,Vv,Uu,I1****/
@@ -16,7 +16,7 @@ let randomString = function () {
 };
 
 //微信重定向
-let weChatAuthRedirect = function (appId, authURL, redirectURL) {
+const weChatAuthRedirect = function (appId, authURL, redirectURL) {
     console.log('weChatAuthRedirect appId==' + appId + ' authURL==' + authURL + ' redirectURL==' + redirectURL);
 
     // 微信认证后的重定向接口
@@ -34,7 +34,7 @@ let weChatAuthRedirect = function (appId, authURL, redirectURL) {
 };
 
 //初始化Rem
-let initRem = function () {
+const initRem = function () {
     /* 设计图文档宽度 */
     let docWidth = 750;
 
@@ -59,7 +59,7 @@ let initRem = function () {
 };
 
 //iOS系统在获取openId后，由于经过重定向，返回按钮会失效。为了点击返回按钮能关闭页面，需要用以下代码，该代码对安卓无影响。因此不需要对手机类型进行区分。
-let initIOSBackBtn = function () {
+const initIOSBackBtn = function () {
 
     let state = {
         title: "title",
@@ -128,7 +128,6 @@ class T {
         inT = Object.assign({}, inT, tConfig);
 
         // initRem();
-
         this.getJsSdkSignature();
     }
 
@@ -158,8 +157,18 @@ class T {
 
     /**
      * 发起ajax请求
-     * @param {object}
-     * @returns {object}
+     * 
+     * 当后台返回的errorCode与tConfig里指定的errorCodeValue 不相符时，表示请求出错，会被拦截，并弹出错误信息
+     * 
+     * @param {Object} option - 该方法需要一个对象作为参数
+     * @param {string} opt.method - 请求的类型，默认为 GET
+     * @param {string} opt.url - 请求的接口地址。此处不进行任何更改，传进什么就是什么。但会在末尾加上一个随机时间戳
+     * @param {Object} opt.params - 请求的数据。默认为空对象
+     * @param {number} opt.timeout - 请求的超时时间。单位为毫秒。默认为30000毫秒。
+     * @param {Object} opt.headers - 请求的头信息。默认为空对象。
+     * @param {string} opt.responseType - 请求的返回类型。默认为text。
+     * @returns {object} axios instance - 返回一个Promise类型的axios实例，可对它做进一步处理。
+     * 关于axios的详细资料见：https://github.com/axios/axios
      */
     ajax(opt) {
         this.log('ajax');
@@ -246,13 +255,15 @@ class T {
 
     /**
      * 微信 JS 接口签名
+     * 需要在tConfig指定是否调用微信JS接口。开发者无需显示调用该方法
+     * 如需要调用，请先在HTML中引入官方JSSDK
+     * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115
      */
     getJsSdkSignature() {
         this.log('getJsSdkSignature');
 
         let that = this;
 
-        //是否需要启用JS接口
         if (!inT.isUseWxSdk) {
             return;
         }
@@ -475,6 +486,7 @@ class T {
 
     /**
      * 显示消息给用户。
+     * 详细参数见：https://wevue.org/doc/v2_0/dialog 中的alert方法
      * @param {object} opt
      */
     showAlert(opt) {
@@ -486,13 +498,19 @@ class T {
         Dialog.alert(opt);
     }
 
+    /**
+     * 显示消息给用户。
+     * 详细参数见：https://wevue.org/doc/v2_0/dialog 中的confirm方法
+     * @param {object} opt
+     */
     showConfirm(opt) {
         this.log('showConfirm');
         return Dialog.confirm(opt)
     }
 
     /**
-     * 显示Loader, 可以通过hideLoader()方法显式关闭或者等待超时才关闭。
+     * 显示Loader。可以通过hideLoader()显式关闭或者等待超时才关闭。
+     * 详细参数见：https://wevue.org/doc/v2_0/toast 中的loading方法
      * @param {object}
      */
     showLoader(tempOpt) {
@@ -517,10 +535,12 @@ class T {
 
     /**
      * 通过微信服务器获取用户openId
+     * 
+     * 如果在tConfig里指定了openId，将不会进行重定向
      */
     getOpenIdFromWx() {
         this.log('getOpenIdFromWx');
-        //在开发阶段，写死了openId，将不会进行重定向
+        
         if (inT.openId) {
             return;
         }
