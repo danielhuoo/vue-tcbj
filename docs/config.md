@@ -1,11 +1,11 @@
-本文将讲述说明一下json文件内各字段的用途。
+本文将讲述说明一下js文件内各字段的用途。
 
-json文件用来对vue-tcbj进行全局配置，指定后台错误返回码、微信公众号appId、是否启用微信的JSSDK能力 等。
+js文件用来对vue-tcbj进行全局配置，指定后台错误返回码、微信公众号appId、是否启用微信的JSSDK能力 等。
 
-以下是一个包含了部分配置选项的 tConfig.json：
+以下是一个包含了部分配置选项的 tConfig.js：
 
-```json
-{
+```js
+const config = {
   "appId": "wx88888888888",
   "openId": "43hjfvdoisu43j2khfsd",
   "baseURL": "https://www.domain.com",
@@ -15,13 +15,16 @@ json文件用来对vue-tcbj进行全局配置，指定后台错误返回码、�
   "wxAuthorizedApi": "/webDevAuthorized",
   "wxDebug": false,
   "wxJsApiList": [
-    "closeWindow"
+        "hideOptionMenu",
+        "scanQRCode"
   ],
   "errorCodeValue": "00"
 }
+
+export default config
 ```
 
-以下是tConfig.json 的配置项
+以下是tConfig.js 的配置项说明
 
 ### appId
 
@@ -31,13 +34,19 @@ json文件用来对vue-tcbj进行全局配置，指定后台错误返回码、�
 
 ### openId
 
+###### string
+
 默认为空。我们一般会在开发阶段指定一个默认的openId来调试
 
 ### baseURL
 
+###### string
+
 必填。服务器接口的域名地址
 
 ### isUseWxSdk
+
+###### boolean
 
 默认为 false。
 
@@ -45,25 +54,37 @@ json文件用来对vue-tcbj进行全局配置，指定后台错误返回码、�
 
 ### publicPath
 
+###### string
+
 静态文件发布后的路径
 
 ### wxSignatureApi
+
+###### string
 
 调用微信JSSDK的签名接口地址
 
 ### wxAuthorizedApi
 
+###### string
+
 获取openId的微信重定向接口
 
 ### wxDebug
+
+###### boolean
 
 是否启用微信调试功能
 
 ### wxJsApiList
 
+###### array
+
 调用微信接口的列表
 
 ### errorCodeValue
+
+###### string
 
 默认为 00 
 

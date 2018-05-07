@@ -62,7 +62,7 @@ Get the openId value.
 
 ### t.getJsSdkSignature()
 微信 JS 接口签名
-需要在tConfig指定是否调用微信JS接口。开发者无需显示调用该方法
+需要在tConfig指定是否调用微信JS接口。开发者无需显式调用该方法
 如需要调用，请先在HTML中引入官方JSSDK
 https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115
 
