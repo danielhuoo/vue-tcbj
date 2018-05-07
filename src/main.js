@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import 'we-vue/lib/style.css'
 import t from 'lib'
-import tConfig from '../tConfig.json'
+import tConfig from '../tConfig.js'
 import { Button } from 'we-vue'
 import App from './App'
 

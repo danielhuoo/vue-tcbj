@@ -116,7 +116,7 @@ class T {
      *
      */
     get version() {
-        return '1.0.7';
+        return '1.0.8';
     }
 
     /**
@@ -255,7 +255,7 @@ class T {
 
     /**
      * 微信 JS 接口签名
-     * 需要在tConfig指定是否调用微信JS接口。开发者无需显示调用该方法
+     * 需要在tConfig指定是否调用微信JS接口。开发者无需显式调用该方法
      * 如需要调用，请先在HTML中引入官方JSSDK
      * https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115
      */
@@ -279,7 +279,34 @@ class T {
         let nonceStr = randomString(),
             timestamp = (new Date().getTime()).toString();
 
-        let configWx = function (signature) {
+        //检测wxJsApiList数组里是否有指定的api
+        const checkWxJSApiList = function (api) {
+            return new Promise((resolve, reject) => {
+                let hasApi = false;
+                for (let i = 0; i < inT.wxJsApiList.length; i++) {
+                    if (inT.wxJsApiList[i] === api) {
+                        hasApi = true;
+                        resolve();
+                    }
+                }
+
+                if (hasApi === false) {
+                    reject();
+                }
+            })
+        };
+
+        //默认加上closeWindow接口，因为需要对iOS进行适配
+        checkWxJSApiList('closeWindow')
+            .then(() => {
+                that.log("tConfig里有closeWindow");
+            })
+            .catch(() => {
+                that.log("tConfig里没有closeWindow");
+                inT.wxJsApiList.push('closeWindow');
+            });
+
+        const configWx = function (signature) {
 
             wx.config({
                 debug: inT.wxDebug, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -290,8 +317,16 @@ class T {
                 jsApiList: inT.wxJsApiList // 必填，需要使用的JS接口列表
             });
 
+            wx.ready(function () {
+                checkWxJSApiList('hideOptionMenu')
+                    .then(() => {
+                        that.log("隐藏右上角菜单");
+                        wx.hideOptionMenu();
+                    });
+            });
+
             if (inT.wxDebug) {
-                this.log('调用sdk成功！')
+                that.log('调用sdk成功！')
             }
         };
 
@@ -305,6 +340,7 @@ class T {
             }
         };
 
+        //调用签名接口
         that.ajax(opts).then(data => {
             if (data.returnObject) {
                 configWx(data.returnObject.signature);
@@ -540,7 +576,7 @@ class T {
      */
     getOpenIdFromWx() {
         this.log('getOpenIdFromWx');
-        
+
         if (inT.openId) {
             return;
         }
