@@ -52,3 +52,14 @@ new Vue({
 ```bash
 npm run dev
 ```
+
+##如何更新
+
+当本插件发布了新版之后，开发者需要在本地更新你的npm库。 推荐使用 npm-check 一键更新，还有emoji交互哦~
+
+
+```bash
+npm install npm-check
+
+npm-check -u
+```
