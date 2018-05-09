@@ -117,7 +117,7 @@ class T {
      *
      */
     get version() {
-        return '1.0.10';
+        return '1.0.11';
     }
 
     /**
@@ -128,7 +128,7 @@ class T {
 
 
         inT = Object.assign({}, inT, tConfig);
-        
+
         this.log('版本号为' + this.version);    
 
         // initRem();
