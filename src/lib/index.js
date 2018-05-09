@@ -1,4 +1,5 @@
 import axios from 'axios'
+import 'we-vue/lib/style.css'
 import { Dialog } from "we-vue"
 import { Toast } from 'we-vue'
 
@@ -105,7 +106,7 @@ class T {
 
     log(message) {
         if (inT.isDebugMode) {
-            console.log(message);
+            console.log('[vue-tcbj]' + message);
         };
     }
 
@@ -125,10 +126,15 @@ class T {
      */
     init(tConfig) {
 
+
         inT = Object.assign({}, inT, tConfig);
+        
+        this.log('版本号为' + this.version);    
 
         // initRem();
         this.getJsSdkSignature();
+
+            
     }
 
     /**
