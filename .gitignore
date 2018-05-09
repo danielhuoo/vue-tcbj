@@ -5,6 +5,7 @@ npm-debug.log
 yarn-error.log
 tConfig.js
 .vscode
+test/
 
 # Editor directories and files
 .idea

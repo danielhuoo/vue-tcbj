@@ -24,7 +24,7 @@ npm install vue-tcbj --save
 import Vue from 'vue'
 import App from './App'
 import t from 'vue-tcbj'
-import tConfig from '../tConfig.json'
+import tConfig from '../tConfig.js'
 
 Vue.use(t, tConfig);
 
@@ -37,19 +37,13 @@ new Vue({
 以上代码便完成了vue-tcbj的引入。接下来只需要对它进行一下配置，马上就能开始运行了
 
 ## 配置
-在项目根目录创建 tConfig.json文件
+在项目根目录创建 tConfig.js文件
 
-推荐使用tConfig命名文件，当然你也可以改为其他名字。
+!> 推荐使用tConfig命名文件，当然你也可以改为其他名字。
 
-路径不一定是根目录，只要你能成功在main.js里import进来就可以。
+!> 路径不一定是根目录，只要你能成功在main.js里import进来就可以。
 
-复制以下内容:
-
-```json
-{
-  "baseURL": "https://h5-test.by-health.com"
-}
-```
+请复制[配置](config.md)至js文件内
 
 ## 开始使用
 

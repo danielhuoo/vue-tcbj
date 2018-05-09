@@ -116,7 +116,7 @@ class T {
      *
      */
     get version() {
-        return '1.0.9';
+        return '1.0.10';
     }
 
     /**
