@@ -202,6 +202,8 @@ localStorage 的读和写操作。
 
 如果在tConfig里指定了openId，将不会进行重定向
 
+开发者需要在tConfig里配置好 wxAuthorizedApi 和 appId
+
 **Kind**: instance method of [<code>T</code>](#T)  
 <a name="T+cookie"></a>
 

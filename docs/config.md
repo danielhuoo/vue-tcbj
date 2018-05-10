@@ -70,6 +70,8 @@ export default config
 
 获取openId的微信重定向接口
 
+需要以 / 开头
+
 ### wxDebug
 
 ###### boolean

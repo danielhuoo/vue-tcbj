@@ -579,6 +579,8 @@ class T {
      * 通过微信服务器获取用户openId
      * 
      * 如果在tConfig里指定了openId，将不会进行重定向
+     * 
+     * 开发者需要在tConfig里配置好 wxAuthorizedApi 和 appId
      */
     getOpenIdFromWx() {
         this.log('getOpenIdFromWx');
