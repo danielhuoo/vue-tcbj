@@ -4,8 +4,10 @@ import t from 'lib'
 import tConfig from '../tConfig.js'
 import { Button } from 'we-vue'
 import App from './App'
+import api from './api'
 
 Vue.use(t, tConfig);
+Vue.use(api, Vue.prototype.t)
 Vue.use(Button);
 
 new Vue({

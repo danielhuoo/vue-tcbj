@@ -89,7 +89,8 @@ let inT = {
     wxDebug: false,
     wxJsApiList: null,
     errorCodeValue: '00',
-    commonErrorTips: '抱歉，服务器繁忙。<br/>请稍后再试。'
+    commonErrorTips: '抱歉，服务器繁忙。<br/>请稍后再试。',
+    isCheckErrorCode:false
 };
 
 class T {
@@ -129,12 +130,12 @@ class T {
 
         inT = Object.assign({}, inT, tConfig);
 
-        this.log('版本号为' + this.version);    
+        this.log('版本号为' + this.version);
 
         // initRem();
         this.getJsSdkSignature();
 
-            
+
     }
 
     /**
@@ -167,7 +168,7 @@ class T {
      * 当后台返回的errorCode与tConfig里指定的errorCodeValue 不相符时，表示请求出错，会被拦截，并弹出错误信息
      * 
      * @param {Object} option - 该方法需要一个对象作为参数
-     * @param {string} opt.method - 请求的类型，默认为 GET
+     * @param {string} opt.method - 请求的类型，默认为 get。 小写即可
      * @param {string} opt.url - 请求的接口地址。此处不进行任何更改，传进什么就是什么。但会在末尾加上一个随机时间戳
      * @param {Object} opt.params - 请求的数据。默认为空对象
      * @param {number} opt.timeout - 请求的超时时间。单位为毫秒。默认为30000毫秒。
@@ -181,7 +182,7 @@ class T {
         const instance = axios.create();
 
         const that = this;
-        let tempMethod = opt.method || 'GET',
+        let tempMethod = opt.method || 'get',
             tempUrl = '',
             tempParams = opt.params || {},
             tempTimeout = 30000,
@@ -189,7 +190,7 @@ class T {
             tempHeaders = {},
             tempResponseType = 'text';
 
-        tempMethod = tempMethod.toUpperCase();
+        // tempMethod = tempMethod.toUpperCase();
 
         if (opt.timeout !== undefined) {
             tempTimeout = opt.timeout;
@@ -205,8 +206,7 @@ class T {
             tempUrl = decodeURIComponent(opt.url);
         }
 
-
-        if (tempMethod === 'GET') {
+        if (tempMethod === 'get') {
             if (tempUrl.indexOf('?') === -1) {
                 tempUrl += '?';
             }
@@ -214,7 +214,7 @@ class T {
             tempUrl += '&_random=' + new Date().getTime();
         }
 
-        if ((tempMethod === 'PUT' || tempMethod === 'DELETE' || tempMethod === 'POST' || tempMethod === 'PATCH') && tempIsStringifyPostData) {
+        if ((tempMethod === 'put' || tempMethod === 'delete' || tempMethod === 'post' || tempMethod === 'patch') && tempIsStringifyPostData) {
             tempParams = JSON.stringify(tempParams);
         }
 
@@ -234,7 +234,7 @@ class T {
 
             const data = response.data;
 
-            if (data.errorCode !== inT.errorCodeValue) {
+            if (data.errorCode !== inT.errorCodeValue && inT.isCheckErrorCode) {
                 that.showAlert({
                     message: data.errorMessage + ' (' + data.errorCode + ')'
                 });
@@ -249,14 +249,21 @@ class T {
             return Promise.reject(error);
         });
 
-        return instance({
+        let instanceObj = {
             method: tempMethod,
             url: tempUrl,
-            params: tempParams,
             timeout: tempTimeout,
             headers: tempHeaders,
             responseType: tempResponseType
-        });
+        }
+
+        if (tempMethod === 'get') {
+            instanceObj.params = tempParams;
+        } else if (tempMethod === 'post') {
+            instanceObj.data = tempParams;
+        }
+
+        return instance(instanceObj);
     }
 
     /**
@@ -338,7 +345,7 @@ class T {
 
         let opts = {
             url: inT.baseURL + inT.wxSignatureApi,
-            method: 'GET',
+            method: 'get',
             params: {
                 noncestr: nonceStr,
                 timestamp: timestamp,

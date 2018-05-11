@@ -1,3 +1,11 @@
+## v1.0.12 (2018-05-11)
+
+### 优化
+
+- t.ajax()增加post方式，传入的数据统一都是params
+- t.ajax()增加errorCode拦截开关。在tConfig里配置 isCheckErrorCode即可
+
+
 ## v1.0.8 (2018-05-07)
 
 ### 优化

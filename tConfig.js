@@ -3,8 +3,8 @@ const config = {
     openId: "o33A7uJE6UPZyYZLhEy7zss4XpYI",
     isUseWxSdk: true,
     isDebugMode: true,
-    baseURL: "http://localhost:8080/crossDomain",
-    // baseURL: "https://h5-test.by-health.com",
+    // baseURL: "http://localhost:8080/crossDomain",
+    baseURL: "https://h5-test.by-health.com",
     publicPath: "https://h5-test.by-health.com/hwy/vue-tcbj/index.html",
     wxSignatureApi: "/archPocApi/getJsSdkSignature",
     wxAuthorizedApi: "/archPocApi/webDevAuthorized",
@@ -14,7 +14,8 @@ const config = {
         "hideOptionMenu",
         "scanQRCode"
     ],
-    errorCodeValue: "00"
+    errorCodeValue: "00",
+    isCheckErrorCode:false
 }
 
 export default config

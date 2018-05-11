@@ -91,3 +91,9 @@ export default config
 默认为 00 
 
 指定后台错误返回码
+
+### isCheckErrorCode
+
+###### boolean
+
+是否检测errorCode并进行拦截
