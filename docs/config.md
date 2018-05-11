@@ -18,7 +18,8 @@ const config = {
         "hideOptionMenu",
         "scanQRCode"
   ],
-  "errorCodeValue": "00"
+  "errorCodeValue": "00",
+  isCheckErrorCode:false
 }
 
 export default config
