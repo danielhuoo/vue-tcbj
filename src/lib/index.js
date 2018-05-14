@@ -117,7 +117,7 @@ class T {
      *
      */
     get version() {
-        return '1.0.13';
+        return '1.0.14';
     }
 
     /**
@@ -165,7 +165,7 @@ class T {
      * 获取静态页面地址
      * @return {string} publicPath
      */
-    getPublicPath(){
+    getPublicPath() {
         return inT.publicPath;
     }
     /**
@@ -593,11 +593,11 @@ class T {
      * 
      * 如果在tConfig里指定了openId，将不会进行重定向
      * 
-     * @param {string} publicPath 可临时覆盖tConfig.js里的 publicPath值，仅在当次调用有效。 可在后面加上所需要的参数，keyName,keyValue 依次排列.
+     * @param {string} params 可在publicPath后面加上所需要的参数，keyName,keyValue 依次排列.
      * 
      * 开发者需要在tConfig里配置好 wxAuthorizedApi 和 appId
      */
-    getOpenIdFromWx(publicPath) {
+    getOpenIdFromWx(params) {
         this.log('getOpenIdFromWx');
 
         // alert('111 url===' + location.href)
@@ -606,12 +606,12 @@ class T {
             return;
         }
 
-        let tempPublicPath = '';
+        let tempPublicPath;
 
-        if (publicPath) {
-            tempPublicPath = publicPath;
+        if (params) {
+            tempPublicPath = inT.publicPath + ',' + params;
         } else {
-            tempPublicPath = inT.publicPath;
+            tempPublicPath = inT.publicPath
         }
 
         inT.openId = this.getQueryString('openId');
@@ -625,7 +625,7 @@ class T {
             // alert('isNeedRedirect');
             this.isNeedRedirect = true;
             // alert('weChatAuthRedirect');
-            weChatAuthRedirect(inT.appId, this.getBaseURL() + inT.wxAuthorizedApi, publicPath);
+            weChatAuthRedirect(inT.appId, this.getBaseURL() + inT.wxAuthorizedApi, tempPublicPath);
             // alert('redirectEnd');
         }
 

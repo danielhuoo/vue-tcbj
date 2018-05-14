@@ -25,11 +25,10 @@ export default {
     return {};
   },
   mounted() {
-   
-    this.t.getOpenIdFromWx(this.t.getPublicPath() + ",securityCode,123456");
+    this.t.getOpenIdFromWx("securityCode,123456");
 
     this.t.showAlert({
-        message:this.t.getQueryString('securityCode')
+      message: this.t.getQueryString("securityCode")
     });
   },
   methods: {

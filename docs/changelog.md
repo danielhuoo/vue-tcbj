@@ -1,9 +1,9 @@
-## v1.0.13 (2018-05-14)
+## v1.0.14 (2018-05-14)
 
 ### 优化
 
 - 增加 t.getPublicPath()
-- t.getOpenIdFromWx()增加一个参数 publicPath
+- t.getOpenIdFromWx()增加一个参数 params
 
 
 

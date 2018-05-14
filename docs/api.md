@@ -1,7 +1,7 @@
 <a name="T"></a>
 
 ## T
-**Kind**: global class
+**Kind**: global class  
 
 <a name="T+version"></a>
 
@@ -204,7 +204,7 @@ localStorage 的读和写操作。
 **Kind**: instance method of [<code>T</code>](#T)  
 <a name="T+getOpenIdFromWx"></a>
 
-### t.getOpenIdFromWx(publicPath)
+### t.getOpenIdFromWx(params)
 通过微信服务器获取用户openId
 
 如果在tConfig里指定了openId，将不会进行重定向
@@ -213,7 +213,7 @@ localStorage 的读和写操作。
 
 | Param | Type | Description |
 | --- | --- | --- |
-| publicPath | <code>string</code> | 可临时覆盖tConfig.js里的 publicPath值，仅在当次调用有效。 可在后面加上所需要的参数，keyName,keyValue 依次排列. 开发者需要在tConfig里配置好 wxAuthorizedApi 和 appId |
+| params | <code>string</code> | 可在publicPath后面加上所需要的参数，keyName,keyValue 依次排列. 开发者需要在tConfig里配置好 wxAuthorizedApi 和 appId |
 
 <a name="T+cookie"></a>
 
