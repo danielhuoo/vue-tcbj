@@ -25,7 +25,12 @@ export default {
     return {};
   },
   mounted() {
-    this.t.getOpenIdFromWx();
+   
+    this.t.getOpenIdFromWx(this.t.getPublicPath() + ",securityCode,123456");
+
+    this.t.showAlert({
+        message:this.t.getQueryString('securityCode')
+    });
   },
   methods: {
     getOpenId() {
@@ -70,8 +75,8 @@ export default {
       this.api.getUserInfo();
     },
 
-    getEasCode(){
-        this.api.getEasCode();
+    getEasCode() {
+      this.api.getEasCode();
     },
 
     getLocationHashValue() {

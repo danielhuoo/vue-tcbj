@@ -26,10 +26,9 @@ const weChatAuthRedirect = function (appId, authURL, redirectURL) {
         //let tempIndexURL = encodeURIComponent(redirectURL);
         //alert('tempIndexURL=='+decodeURIComponent(tempIndexURL));
 
-        // 第一个参数是重定向的URL, 以后的参数以 keyName,keyValue依次排列.
         tempState = encodeURIComponent(redirectURL),
         tempAuthorizeURL = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + appId + '&redirect_uri=' + tempRedirectURL + '&response_type=code&scope=snsapi_base&state=' + tempState + '#wechat_redirect';
-    //alert('微信重定向认证 tempAuthorizeURL:'+decodeURIComponent(tempAuthorizeURL));
+    // alert('微信重定向认证 tempAuthorizeURL:' + decodeURIComponent(tempAuthorizeURL));
 
     window.location.replace(tempAuthorizeURL);
 };
@@ -90,7 +89,7 @@ let inT = {
     wxJsApiList: null,
     errorCodeValue: '00',
     commonErrorTips: '抱歉，服务器繁忙。<br/>请稍后再试。',
-    isCheckErrorCode:false
+    isCheckErrorCode: false
 };
 
 class T {
@@ -118,7 +117,7 @@ class T {
      *
      */
     get version() {
-        return '1.0.12';
+        return '1.0.13';
     }
 
     /**
@@ -162,6 +161,13 @@ class T {
         return inT.baseURL;
     }
 
+    /**
+     * 获取静态页面地址
+     * @return {string} publicPath
+     */
+    getPublicPath(){
+        return inT.publicPath;
+    }
     /**
      * 发起ajax请求
      * 
@@ -587,13 +593,25 @@ class T {
      * 
      * 如果在tConfig里指定了openId，将不会进行重定向
      * 
+     * @param {string} publicPath 可临时覆盖tConfig.js里的 publicPath值，仅在当次调用有效。 可在后面加上所需要的参数，keyName,keyValue 依次排列.
+     * 
      * 开发者需要在tConfig里配置好 wxAuthorizedApi 和 appId
      */
-    getOpenIdFromWx() {
+    getOpenIdFromWx(publicPath) {
         this.log('getOpenIdFromWx');
+
+        // alert('111 url===' + location.href)
 
         if (inT.openId) {
             return;
+        }
+
+        let tempPublicPath = '';
+
+        if (publicPath) {
+            tempPublicPath = publicPath;
+        } else {
+            tempPublicPath = inT.publicPath;
         }
 
         inT.openId = this.getQueryString('openId');
@@ -607,7 +625,7 @@ class T {
             // alert('isNeedRedirect');
             this.isNeedRedirect = true;
             // alert('weChatAuthRedirect');
-            weChatAuthRedirect(inT.appId, this.getBaseURL() + inT.wxAuthorizedApi, inT.publicPath);
+            weChatAuthRedirect(inT.appId, this.getBaseURL() + inT.wxAuthorizedApi, publicPath);
             // alert('redirectEnd');
         }
 

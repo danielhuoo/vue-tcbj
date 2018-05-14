@@ -1,7 +1,7 @@
 <a name="T"></a>
 
 ## T
-**Kind**: global class  
+**Kind**: global class
 
 <a name="T+version"></a>
 
@@ -37,6 +37,13 @@ Get the openId value.
 
 **Kind**: instance method of [<code>T</code>](#T)  
 **Returns**: <code>string</code> - baseURL  
+<a name="T+getPublicPath"></a>
+
+### t.getPublicPath() ⇒ <code>string</code>
+获取静态页面地址
+
+**Kind**: instance method of [<code>T</code>](#T)  
+**Returns**: <code>string</code> - publicPath  
 <a name="T+ajax"></a>
 
 ### t.ajax(option) ⇒ <code>object</code>
@@ -51,7 +58,7 @@ Get the openId value.
 | Param | Type | Description |
 | --- | --- | --- |
 | option | <code>Object</code> | 该方法需要一个对象作为参数 |
-| opt.method | <code>string</code> | 请求的类型，默认为 GET |
+| opt.method | <code>string</code> | 请求的类型，默认为 get。 小写即可 |
 | opt.url | <code>string</code> | 请求的接口地址。此处不进行任何更改，传进什么就是什么。但会在末尾加上一个随机时间戳 |
 | opt.params | <code>Object</code> | 请求的数据。默认为空对象 |
 | opt.timeout | <code>number</code> | 请求的超时时间。单位为毫秒。默认为30000毫秒。 |
@@ -197,14 +204,17 @@ localStorage 的读和写操作。
 **Kind**: instance method of [<code>T</code>](#T)  
 <a name="T+getOpenIdFromWx"></a>
 
-### t.getOpenIdFromWx()
+### t.getOpenIdFromWx(publicPath)
 通过微信服务器获取用户openId
 
 如果在tConfig里指定了openId，将不会进行重定向
 
-开发者需要在tConfig里配置好 wxAuthorizedApi 和 appId
-
 **Kind**: instance method of [<code>T</code>](#T)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| publicPath | <code>string</code> | 可临时覆盖tConfig.js里的 publicPath值，仅在当次调用有效。 可在后面加上所需要的参数，keyName,keyValue 依次排列. 开发者需要在tConfig里配置好 wxAuthorizedApi 和 appId |
+
 <a name="T+cookie"></a>
 
 ### t.cookie(name, value, options) ⇒ <code>string</code>
