@@ -27,9 +27,9 @@ export default {
   mounted() {
     this.t.getOpenIdFromWx("securityCode,123456");
 
-    this.t.showAlert({
-      message: this.t.getQueryString("securityCode")
-    });
+    // this.t.showAlert({
+    //   message: this.t.getQueryString("securityCode")
+    // });
   },
   methods: {
     getOpenId() {

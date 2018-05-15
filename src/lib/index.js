@@ -117,7 +117,7 @@ class T {
      *
      */
     get version() {
-        return '1.0.15';
+        return '1.0.16';
     }
 
     /**
@@ -168,6 +168,7 @@ class T {
     getPublicPath() {
         return inT.publicPath;
     }
+
     /**
      * 发起ajax请求
      * 
@@ -606,7 +607,7 @@ class T {
             return;
         }
 
-        let tempPublicPath;
+        let tempPublicPath = '';
 
         if (params) {
             tempPublicPath = inT.publicPath + ',' + params;
