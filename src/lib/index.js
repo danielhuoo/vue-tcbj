@@ -117,7 +117,7 @@ class T {
      *
      */
     get version() {
-        return '1.0.16';
+        return '1.0.17';
     }
 
     /**
@@ -133,8 +133,6 @@ class T {
 
         // initRem();
         this.getJsSdkSignature();
-
-
     }
 
     /**
@@ -551,7 +549,8 @@ class T {
         if (!opt.title) {
             opt.title = '';
         }
-        Dialog.alert(opt);
+
+        return Dialog.alert(opt);
     }
 
     /**

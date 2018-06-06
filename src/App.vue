@@ -20,122 +20,126 @@
 
 <script>
 export default {
-  name: "app",
-  data() {
-    return {};
-  },
-  mounted() {
-    this.t.getOpenIdFromWx("securityCode,123456");
-
-    // this.t.showAlert({
-    //   message: this.t.getQueryString("securityCode")
-    // });
-  },
-  methods: {
-    getOpenId() {
-      this.t.showAlert({
-        message: this.t.getOpenId()
-      });
+    name: "app",
+    data() {
+        return {};
     },
+    mounted() {
+        this.t.getOpenIdFromWx("securityCode,123456");
 
-    getVersion() {
-      this.t.showAlert({
-        message: this.t.version
-      });
+        // this.t.showAlert({
+        //   message: this.t.getQueryString("securityCode")
+        // });
     },
-    showLoader() {
-      this.t.showLoader();
-    },
+    methods: {
+        getOpenId() {
+            this.t.showAlert({
+                message: this.t.getOpenId()
+            });
+        },
 
-    showAlert() {
-      this.t.showAlert({
-        message: "你最近还好吗"
-      });
-    },
+        getVersion() {
+            this.t.showAlert({
+                message: this.t.version
+            });
+        },
+        showLoader() {
+            this.t.showLoader();
+        },
 
-    showConfirm() {
-      this.t
-        .showConfirm({
-          title: "你最近还好吗",
-          message: "欢迎使用 we-vue!",
-          showCancelButton: true
-        })
-        .then(() => {
-          console.log("confirmed");
-        })
-        .catch(() => {
-          console.log("canceled");
-        });
-    },
+        showAlert() {
+            this.t
+                .showAlert({
+                    message: "你最近还好吗"
+                })
+                .then(() => {
+                    console.log('点击alert了');
+                });
+        },
 
-    getUserInfo() {
-      console.log("fetchData");
+        showConfirm() {
+            this.t
+                .showConfirm({
+                    title: "你最近还好吗",
+                    message: "欢迎使用 we-vue!",
+                    showCancelButton: true
+                })
+                .then(() => {
+                    console.log("confirmed");
+                })
+                .catch(() => {
+                    console.log("canceled");
+                });
+        },
 
-      this.api.getUserInfo();
-    },
+        getUserInfo() {
+            console.log("fetchData");
 
-    getEasCode() {
-      this.api.getEasCode();
-    },
+            this.api.getUserInfo();
+        },
 
-    getLocationHashValue() {
-      this.t.showAlert({
-        message: this.t.getLocationHashValue("name")
-      });
-    },
+        getEasCode() {
+            this.api.getEasCode();
+        },
 
-    getQueryString() {
-      this.t.showAlert({
-        message: this.t.getQueryString("name")
-      });
-    },
+        getLocationHashValue() {
+            this.t.showAlert({
+                message: this.t.getLocationHashValue("name")
+            });
+        },
 
-    setLocalStorage() {
-      this.t.localStorage("name", "tcbj");
-    },
+        getQueryString() {
+            this.t.showAlert({
+                message: this.t.getQueryString("name")
+            });
+        },
 
-    getLocalStorage() {
-      this.t.showAlert({
-        message: this.t.localStorage("name")
-      });
-    },
+        setLocalStorage() {
+            this.t.localStorage("name", "tcbj");
+        },
 
-    updateLocationHashKey() {
-      let value = "baiyue";
-      this.t.updateLocationHashKey("name", value);
-      console.log("locationHashKey 更改为===" + value);
-    },
+        getLocalStorage() {
+            this.t.showAlert({
+                message: this.t.localStorage("name")
+            });
+        },
 
-    setCookie() {
-      this.t.cookie("myName", "huohuohuo");
-    },
+        updateLocationHashKey() {
+            let value = "baiyue";
+            this.t.updateLocationHashKey("name", value);
+            console.log("locationHashKey 更改为===" + value);
+        },
 
-    getCookie() {
-      this.t.showAlert({
-        message: this.t.cookie("myName")
-      });
-    },
+        setCookie() {
+            this.t.cookie("myName", "huohuohuo");
+        },
 
-    qrCode() {
-      wx.ready(function() {
-        // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
-        wx.scanQRCode({
-          needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-          scanType: ["qrCode"], // 可以指定扫二维码还是一维码，默认二者都有
-          success: function(res) {},
-          complete: function() {
-            wx.closeWindow();
-          }
-        });
-      });
+        getCookie() {
+            this.t.showAlert({
+                message: this.t.cookie("myName")
+            });
+        },
+
+        qrCode() {
+            wx.ready(function() {
+                // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+                wx.scanQRCode({
+                    needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                    scanType: ["qrCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                    success: function(res) {},
+                    complete: function() {
+                        wx.closeWindow();
+                    }
+                });
+            });
+        }
     }
-  }
 };
 </script>
 
 <style>
 body {
-  margin: 0;
-  padding: 20px 10px;
+    margin: 0;
+    padding: 20px 10px;
 }
 </style>
